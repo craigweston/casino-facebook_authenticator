@@ -1,0 +1,9 @@
+CASino Facebook authentication installation generator
+
+Description:
+    The 'casino-facebook_authenticator:install' command installs dependencies for 'casino-facebook_authenticator
+
+Example:
+    rails g casino-facebook_authenticator:install
+
+    See http://github.com/craigweston/casino-facebook_authenticator for more information.
