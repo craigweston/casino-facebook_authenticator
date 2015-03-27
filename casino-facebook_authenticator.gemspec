@@ -17,6 +17,12 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ['lib']
 
+  s.add_development_dependency 'rake', '~> 10.0'
+  s.add_development_dependency 'rspec', '~> 2.12'
+  s.add_development_dependency 'simplecov', '~> 0.7'
+  s.add_development_dependency 'coveralls'
+  s.add_development_dependency 'sqlite3', '~> 1.3.7'
+
   s.add_dependency "rails", ">= 4.1"
   s.add_dependency "koala", "~> 1.11.0rc"
   s.add_runtime_dependency 'activerecord', '>= 4.1.0', '< 4.3.0'

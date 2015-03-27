@@ -1,4 +1,6 @@
-require "koala"
+require 'active_record'
+require 'rails'
+require 'koala'
 
 class CASino::FacebookAuthenticator
 
@@ -34,6 +36,7 @@ class CASino::FacebookAuthenticator
     end
 
     # facebook column that stores facebook id
+    raise ArgumentError, "Facebook id column name is missing" unless @options[:facebook_id_column]
     @facebook_id_column =  @options[:facebook_id_column]
 
     # facebook initialization
@@ -49,9 +52,11 @@ class CASino::FacebookAuthenticator
   def validate(params, cookies)
     user_access_token = params[:access_token]
     if user_access_token
-      return user_data(user_access_token)
+      load_user_data(user_access_token)
+    else
+      false
     end
-  rescue
+  rescue ActiveRecord::RecordNotFound
     false
   end
 
@@ -85,10 +90,15 @@ class CASino::FacebookAuthenticator
     return model
   end
 
-  def user_data(user_access_token)
+  def load_user_data(user_access_token)
     data = facebook_data_from_token(user_access_token)
-    user = find_user_by_facebook_id(data['user_id']) unless data.nil?
-    { username: user.send(@username_column), extra_attributes: extra_attributes(user, user_access_token) } unless user.nil?
+    return false unless data
+    user = find_user_by_facebook_id(data['user_id'])
+    user_data(user, user_access_token)
+  end
+
+  def user_data(user, user_access_token)
+    { username: user.send(@username_column), extra_attributes: extra_attributes(user, user_access_token) }
   end
 
   def facebook_data_from_token(user_access_token)
@@ -127,13 +137,16 @@ class CASino::FacebookAuthenticator
     end
     # facebook attributes
     if extra_attributes_option.has_key?(:facebook)
-      graph = Koala::Facebook::API.new(user_access_token)
-      facebook_profile = graph.get_object("me")
+      facebook_profile = facebook_profile_data(user_access_token)
       extra_facebook_attributes_option.each do |attribute_name, facebook_attribute|
         attributes[attribute_name] = facebook_profile[facebook_attribute]
       end
     end
     attributes
+  end
+
+  def facebook_profile_data(user_access_token)
+    Koala::Facebook::API.new(user_access_token).get_object("me")
   end
 
   def extra_database_attributes_option
