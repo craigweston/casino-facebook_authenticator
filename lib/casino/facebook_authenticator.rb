@@ -26,8 +26,8 @@ class CASino::FacebookAuthenticator
     if @options[:account_table]
       @account_model = create_model(@options[:account_table], @options[:account_model])
 
-      if @options[:account_type] and @options[:account_type_column]
-        @account_type = @options[:account_type]
+      if @options[:account_type_column]
+        @account_type = @options[:account_type] || 'facebook'
         @account_type_column = @options[:account_type_column]
       end
 
@@ -75,7 +75,7 @@ class CASino::FacebookAuthenticator
       if @options[:connection][:database]
         model_name = "#{@options[:connection][:database].gsub(/[^a-zA-Z]+/, '')}_#{model_name}"
       end
-      model_name = model_name.classify
+        model_name = model_name.classify
     end
     model_class_name = "#{self.class.to_s}::#{model_name}"
     eval <<-END
@@ -117,7 +117,7 @@ class CASino::FacebookAuthenticator
     facebook_id_find_by = "find_by_#{@facebook_id_column}"
     if @account_model
       account = nil
-      if @account_type_column.nil? || @account_type.nil?
+      if @account_type_column.nil?
         account = @account_model.send("#{facebook_id_find_by}!", facebook_id)
       else
         account = @account_model.send("#{facebook_id_find_by}_and_#{@account_type_column}!", facebook_id, @account_type)
