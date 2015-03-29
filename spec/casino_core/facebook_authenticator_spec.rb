@@ -174,6 +174,7 @@ describe CASino::FacebookAuthenticator do
           drop_table :users
         end
       end
+      described_class.send(:remove_const, :TmpcasinotestauthsqliteUser)
     end
 
     describe 'validate user model with single user table' do
@@ -195,7 +196,9 @@ describe CASino::FacebookAuthenticator do
     let(:user_class) { described_class::TmpcasinotestauthsqliteUser }
     let(:account_class) { described_class::TmpcasinotestauthsqliteAccount }
 
-    subject { described_class.new(options.merge(account_table: 'accounts', account_user_id_column: 'user_id', facebook_id_column: 'account_id')) }
+    subject { described_class.new(options.merge(account_table: 'accounts',
+                                                account_user_id_column: 'user_id',
+                                                facebook_id_column: 'account_id')) }
 
     before do
       subject # ensure everything is initialized
@@ -234,6 +237,8 @@ describe CASino::FacebookAuthenticator do
           drop_table :accounts
         end
       end
+      described_class.send(:remove_const, :TmpcasinotestauthsqliteUser)
+      described_class.send(:remove_const, :TmpcasinotestauthsqliteAccount)
     end
 
     describe 'validate user model with account mapping table' do
@@ -251,4 +256,73 @@ describe CASino::FacebookAuthenticator do
 
   end
 
+  describe 'config user and account mapping table with account type column' do
+
+    let(:user_class) { described_class::TmpcasinotestauthsqliteUser }
+    let(:account_class) { described_class::TmpcasinotestauthsqliteAccount }
+
+    subject { described_class.new(options.merge(account_table: 'accounts',
+                                                account_user_id_column: 'user_id',
+                                                account_type_column: 'account_type',
+                                                facebook_id_column: 'account_id' )) }
+
+    before do
+      subject # ensure everything is initialized
+
+      ::ActiveRecord::Base.establish_connection options[:connection]
+
+      ActiveRecord::Migration.suppress_messages do
+        ActiveRecord::Schema.define do
+          create_table :users do |t|
+            t.string :username
+            t.string :email
+          end
+
+          create_table :accounts do |t|
+            t.string :account_id
+            t.string :account_type
+            t.string :user_id
+          end
+
+        end
+      end
+
+      user_class.create!(
+        id: 123,
+        username: 'test',
+        email: 'mail@example.org')
+
+      account_class.create!(
+        account_id: 9876,
+        account_type: 'facebook',
+        user_id: 123)
+    end
+
+    after do
+      ActiveRecord::Migration.suppress_messages do
+        ActiveRecord::Schema.define do
+          drop_table :users
+          drop_table :accounts
+        end
+      end
+      described_class.send(:remove_const, :TmpcasinotestauthsqliteUser)
+      described_class.send(:remove_const, :TmpcasinotestauthsqliteAccount)
+    end
+
+    describe 'validate user model with account mapping table with account type' do
+      it_should_behave_like "a custom user model name"
+    end
+
+    describe 'invalid yaml input with account mapping table with account type' do
+      it_should_behave_like "a invalid yaml input"
+      it_should_behave_like "a invalid yaml input with account mapping table specified"
+    end
+
+    describe 'validate with account mapping table with account type' do
+      it_should_behave_like "a validate"
+    end
+
+  end
+
 end
+
