@@ -75,8 +75,8 @@ This configuration allows the Facebook id to be stored in a seperate table and m
         ...
 ```
 
-####User table with mapping table with account type
-This configuration allows multiple account types to be stored in one table, with the specific type of account stored in the account_type_column. This allows multiple third party accounts to be stored in one table. 
+####User table with mapping table and account type
+This configuration allows multiple account types to be stored in one table, with the specific type of account stored in the account_type_column.
 
 By default the account type for this authenticator is *facebook*, however this can be overriden by providing an account_type value in the configuration.
 
