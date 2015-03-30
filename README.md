@@ -12,6 +12,26 @@ This project uses an external authenticator mechanism that helps integrate third
 
 The idea for this originally came from [Issue #32](https://github.com/rbCAS/CASino/issues/32) of CASino and builds upon functionality from the [casino-activerecord_authenticator](https://github.com/rbCAS/casino-activerecord_authenticator).
 
+##Install
+
+Add *casino-facebook_authenticator* to your Gemfile.
+
+```
+gem 'casino-facebook_authenticator', :git => "https://github.com/craigweston/casino-facebook_authenticator"
+```
+
+Run the installation generator within your CASino application:
+
+```
+rails g casino-facebook_authenticator:install
+```
+
+This adds the following in your application.js:
+
+```
+//= require 'casino-facebook_authenticator.js'
+```
+
 ##Configuration
 
 As mentioned above, this authenticator does not integrate with the standard *authenticators* configuration section of CASino. Instead, a new section is required called *external_authenticators* within the *cas.yml*.
@@ -70,8 +90,8 @@ This configuration allows the facebook id to be stored in a seperate table and m
         user_table: "users"
         username_column: "username"
         facebook_id_column: "facebook_id"
-        account_table: 'accounts'
-        account_user_id_column: 'user_id'
+        account_table: "accounts"
+        account_user_id_column: "user_id"
         ...
 ```
 
@@ -86,13 +106,13 @@ By default the account type for this authenticator is *facebook*, however this c
       authenticator: "Facebook"
       options:
         ...
-        user_table: 'users'
-        username_column: 'username'
-        facebook_id_column: 'account_id'
-        account_table: 'accounts'
-        account_user_id_column: 'user_id'
-        account_type_column: 'account_type'
-        account_type: 'facebook' # [optional]
+        user_table: "users"
+        username_column: "username"
+        facebook_id_column: "account_id"
+        account_table: "accounts"
+        account_user_id_column: "user_id"
+        account_type_column: "account_type"
+        account_type: "facebook" # [optional]
         ...
 ```
 
