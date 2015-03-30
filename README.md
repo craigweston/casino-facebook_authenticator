@@ -6,15 +6,15 @@
 
 Provides mechanism to use Facebook as an authenticator for [CASino](https://github.com/rbCAS/CASino).
 
-This authenticator uses the Facebook JavaScript SDK to log in users via a login button on the CASino login page. After logging in and generating an access token on the client side, the token is passed to the server where it is verified against Facebook and then mapped against an existing user in the database using Active Record.
+This authenticator uses the Facebook JavaScript SDK to log in users via a standard Facebook login button on the CASino login page. After logging in and generating an access token on the client side, the token is passed to the server where it is verified against Facebook and the user looked up by facebook id in the backing datastore.
 
-This project uses external authenticator mechanism to integrate third party login providers into CASino. This functionality is not part of the CASino core and is only available through a fork of CASino located [here](https://github.com/craigweston/CASino).
+This project uses an external authenticator mechanism that helps integrate third party login providers into CASino. This functionality is not part of the CASino core, but is currently available through a fork of CASino located [here](https://github.com/craigweston/CASino).
 
-The idea for this originally came from [Issue #32](https://github.com/rbCAS/CASino/issues/32) of CASino.
+The idea for this originally came from [Issue #32](https://github.com/rbCAS/CASino/issues/32) of CASino and builds upon functionality from the [casino-activerecord_authenticator](https://github.com/rbCAS/casino-activerecord_authenticator).
 
 ##Configuration
 
-As mentioned above, this authenticator does not integrate with the standard *authenticators* configuration section of CASino. Instead a new section is required called *external_authenticators* within the *cas.yml*.
+As mentioned above, this authenticator does not integrate with the standard *authenticators* configuration section of CASino. Instead, a new section is required called *external_authenticators* within the *cas.yml*.
 
 You must provide a Facebook app ID and app secret, as well as connection information for your datastore.
 
@@ -59,7 +59,7 @@ This configuration uses only one table to store both the user and the facebook_i
 
 ####User table with mapping table
 
-This configuration allows the Facebook id to be stored in a seperate table and mapped back to the user table with a user id column. This table should be setup with the bare minimum of a user_id column and facebook_id column.
+This configuration allows the facebook id to be stored in a seperate table and mapped back to the user table with a user id column. Therefore, this table should be setup with the bare minimum of a user_id column and facebook_id column.
 
 ```
   external_authenticators:
