@@ -11,12 +11,12 @@ class CASino::FacebookAuthenticator
   # @param [Hash] options
   def initialize(options)
     if !options.respond_to?(:deep_symbolize_keys)
-      raise ArgumentError, "When assigning attributes, you must pass a hash as an argument."
+      raise ArgumentError, 'When assigning attributes, you must pass a hash as an argument.'
     end
     @options = options.deep_symbolize_keys
 
     # user active record initialization
-    raise ArgumentError, "User table name is missing" unless @options[:user_table]
+    raise ArgumentError, 'User table name is missing' unless @options[:user_table]
     @user_model = create_model(@options[:user_table], @options[:user_model])
 
     @username_column = @options[:username_column] || 'username'
@@ -31,24 +31,26 @@ class CASino::FacebookAuthenticator
         @account_type_column = @options[:account_type_column]
       end
 
-      raise ArgumentError, "Account user id column name is missing" unless @options[:account_user_id_column]
+      raise ArgumentError, 'Account user id column name is missing' unless @options[:account_user_id_column]
       @account_user_id_column = @options[:account_user_id_column]
     end
 
     # facebook column that stores facebook id
-    raise ArgumentError, "Facebook id column name is missing" unless @options[:facebook_id_column]
+    raise ArgumentError, 'Facebook id column name is missing' unless @options[:facebook_id_column]
     @facebook_id_column =  @options[:facebook_id_column]
 
     # facebook initialization
-    raise ArgumentError, "App ID is missing" unless @options[:app_id]
+    raise ArgumentError, 'App ID is missing' unless @options[:app_id]
     @app_id = @options[:app_id]
 
-    raise ArgumentError, "App secret is missing" unless @options[:app_secret]
+    raise ArgumentError, 'App secret is missing' unless @options[:app_secret]
     app_secret = @options[:app_secret]
 
     @oauth = Koala::Facebook::OAuth.new(@app_id, app_secret)
   end
 
+  # @param [Hash] parameters
+  # @param [Hash] cookies
   def validate(params, cookies)
     user_access_token = params[:access_token]
     if user_access_token
@@ -123,7 +125,7 @@ class CASino::FacebookAuthenticator
         account = @account_model.send("#{facebook_id_find_by}_and_#{@account_type_column}!", facebook_id, @account_type)
       end
       user_id = account.send(@account_user_id_column)
-      user = @user_model.send("find_by_id!", user_id)
+      user = @user_model.send('find_by_id!', user_id)
     else
       user = @user_model.send("#{facebook_id_find_by}!", facebook_id)
     end
@@ -146,7 +148,7 @@ class CASino::FacebookAuthenticator
   end
 
   def facebook_profile_data(user_access_token)
-    Koala::Facebook::API.new(user_access_token).get_object("me")
+    Koala::Facebook::API.new(user_access_token).get_object('me')
   end
 
   def extra_database_attributes_option
