@@ -8,7 +8,7 @@ Provides mechanism to use Facebook as an authenticator for [CASino](https://gith
 
 This authenticator uses the Facebook JavaScript SDK to log in users via a standard Facebook login button on the CASino login page. After logging in and generating an access token on the client side, the token is passed to the server where it is verified against Facebook and the user looked up by facebook id in the backing datastore.
 
-This project uses an external authenticator mechanism that helps integrate third party login providers into CASino. This functionality is not part of the CASino core, but is currently available through a fork of CASino located [here](https://github.com/craigweston/CASino).
+This project uses an external authenticator mechanism that helps integrate third party login providers into CASino. This functionality is not part of the CASino core, but is currently available through a fork of CASino located [here](https://github.com/craigweston/CASino) and a pull request [here](https://github.com/rbCAS/CASino/pull/98).
 
 The idea for this originally came from [Issue #32](https://github.com/rbCAS/CASino/issues/32) of CASino and builds upon functionality from the [casino-activerecord_authenticator](https://github.com/rbCAS/casino-activerecord_authenticator).
 
