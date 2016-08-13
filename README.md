@@ -2,8 +2,6 @@
 [![Build Status](https://travis-ci.org/craigweston/casino-facebook_authenticator.svg?branch=master)](https://travis-ci.org/craigweston/casino-facebook_authenticator)
 [![Coverage Status](https://coveralls.io/repos/craigweston/casino-facebook_authenticator/badge.svg)](https://coveralls.io/r/craigweston/casino-facebook_authenticator)
 
-*This project is currently under development*
-
 Provides mechanism to use Facebook as an authenticator for [CASino](https://github.com/rbCAS/CASino).
 
 This authenticator uses the Facebook JavaScript SDK to log in users via a standard Facebook login button on the CASino login page. After logging in and generating an access token on the client side, the token is passed to the server where it is verified against Facebook and the user looked up by facebook id in the backing datastore.
