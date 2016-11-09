@@ -105,11 +105,11 @@ class CASino::FacebookAuthenticator
 
   def facebook_data_from_token(user_access_token)
     app_access_token_info = @oauth.get_app_access_token_info
-    if user_access_token and app_access_token_info
+    if user_access_token && app_access_token_info
       graph = Koala::Facebook::API.new(app_access_token_info['access_token'])
       debug_token_info = graph.debug_token(user_access_token)
       data = debug_token_info['data'] unless debug_token_info.nil?
-      if data and data['is_valid'] and data['app_id'].to_s == @app_id.to_s
+      if data && data['is_valid'] && data['app_id'].to_s == @app_id.to_s
         return data
       end
     end

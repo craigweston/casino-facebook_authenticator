@@ -9,7 +9,7 @@
   }
 
   function setAccessToken(form, access_token) {
-    var fb_token_input = document.createElement("input");
+    var fb_token_input = doc.createElement("input");
     fb_token_input.setAttribute('type','hidden');
     fb_token_input.setAttribute('name', 'access_token');
     fb_token_input.setAttribute('value', access_token);
@@ -18,7 +18,7 @@
 
   function statusChangeCallback(response) {
     if (response.status === 'connected') {
-      var form = parentForm(document.getElementById('fblogin'));
+      var form = parentForm(doc.getElementById('fblogin'));
       setAccessToken(form, response.authResponse.accessToken);
       form.submit();
     }
